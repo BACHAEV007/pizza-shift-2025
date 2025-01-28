@@ -68,8 +68,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-
+    implementation(libs.retrofit)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.logging.interceptor)
     implementation(libs.kotlinx.serialization.json)
