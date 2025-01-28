@@ -1,5 +1,6 @@
 package com.example.pizza_shift_2025.data.converter
 
+import com.example.pizza_shift_2025.constants.Constants.IMG_URL
 import com.example.pizza_shift_2025.data.model.PizzaModel
 import com.example.pizza_shift_2025.domain.entity.Pizza
 
@@ -22,6 +23,6 @@ fun PizzaModel.toDomainModel(): Pizza {
         isGlutenFree = this.isGlutenFree,
         isNew = this.isNew,
         isHit = this.isHit,
-        img = "https://shift-intensive.ru/api/" + this.img
+        img = IMG_URL + this.img
     )
 }

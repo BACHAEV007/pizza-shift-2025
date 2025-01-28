@@ -17,6 +17,6 @@ data class Pizza(
     val protein: String,
     val sizes: List<Size>,
     val sodium: String,
-    val toppings: List<Topping>,
+    val toppings: List<Ingredient>,
     val totalFat: String
 )

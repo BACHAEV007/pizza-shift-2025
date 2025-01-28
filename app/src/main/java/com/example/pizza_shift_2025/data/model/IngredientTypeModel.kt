@@ -1,5 +1,6 @@
 package com.example.pizza_shift_2025.data.model
 
+
 enum class IngredientTypeModel {
     PINEAPPLE, MOZZARELLA, PEPERONI, GREEN_PEPPER, MUSHROOMS, BASIL, CHEDDAR,
     PARMESAN, FETA, HAM, PICKLE, TOMATO, BACON, ONION, CHILE, SHRIMPS,

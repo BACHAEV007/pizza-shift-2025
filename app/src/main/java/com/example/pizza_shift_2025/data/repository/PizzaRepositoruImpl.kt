@@ -9,6 +9,6 @@ class PizzaRepositoryImpl(
     private val pizzaApi: PizzaApi
 ): PizzaRepository {
     override suspend fun getPizzaCatalog(): List<Pizza> {
-        return (pizzaApi.getPizzaCatalog().map { it.toDomainModel() })
+        return (pizzaApi.getPizzaCatalog().catalog.map { it.toDomainModel() })
     }
 }

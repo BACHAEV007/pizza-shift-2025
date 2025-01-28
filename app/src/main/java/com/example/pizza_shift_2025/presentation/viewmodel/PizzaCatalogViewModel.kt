@@ -15,6 +15,9 @@ class PizzaCatalogViewModel(
 
     private val _state = MutableStateFlow<PizzaCatalogState>(PizzaCatalogState.Initial)
     val state: StateFlow<PizzaCatalogState> = _state
+    init {
+        loadCatalog()
+    }
 
     fun loadCatalog() {
         viewModelScope.launch {
