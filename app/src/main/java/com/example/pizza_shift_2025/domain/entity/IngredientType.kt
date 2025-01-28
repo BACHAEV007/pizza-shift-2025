@@ -1,0 +1,7 @@
+package com.example.pizza_shift_2025.domain.entity
+
+enum class IngredientType {
+    PINEAPPLE, MOZZARELLA, PEPERONI, GREEN_PEPPER, MUSHROOMS, BASIL, CHEDDAR,
+    PARMESAN, FETA, HAM, PICKLE, TOMATO, BACON, ONION, CHILE, SHRIMPS,
+    CHICKEN_FILLET, MEATBALLS
+}
