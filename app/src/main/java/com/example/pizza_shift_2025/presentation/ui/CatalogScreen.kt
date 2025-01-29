@@ -42,7 +42,7 @@ fun CatalogScreen(modifier: Modifier = Modifier, viewModel: PizzaCatalogViewMode
                 catalog = state.pizzaCatalog,
                 onItemClicked = onItemSelected
             )
-            is PizzaCatalogState.Failure -> LoadingComponent()
+            is PizzaCatalogState.Failure -> Unit
         }
     }
 

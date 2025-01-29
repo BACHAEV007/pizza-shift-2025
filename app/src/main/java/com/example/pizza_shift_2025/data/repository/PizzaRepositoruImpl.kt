@@ -1,5 +1,6 @@
 package com.example.pizza_shift_2025.data.repository
 
+import android.util.Log
 import com.example.pizza_shift_2025.data.converter.toDomainModel
 import com.example.pizza_shift_2025.data.network.PizzaApi
 import com.example.pizza_shift_2025.domain.entity.Pizza
@@ -9,6 +10,7 @@ class PizzaRepositoryImpl(
     private val pizzaApi: PizzaApi
 ): PizzaRepository {
     override suspend fun getPizzaCatalog(): List<Pizza> {
+        Log.d("PENIS","${pizzaApi.getPizzaCatalog().catalog[1].img}")
         return (pizzaApi.getPizzaCatalog().catalog.map { it.toDomainModel() })
     }
 }
