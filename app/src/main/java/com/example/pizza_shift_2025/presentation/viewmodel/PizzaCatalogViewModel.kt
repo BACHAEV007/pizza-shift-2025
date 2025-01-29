@@ -1,5 +1,6 @@
 package com.example.pizza_shift_2025.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_shift_2025.domain.usecase.GetPizzaCatalogUseCase
