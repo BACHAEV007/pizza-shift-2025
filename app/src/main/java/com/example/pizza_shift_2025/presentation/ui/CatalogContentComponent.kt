@@ -62,6 +62,7 @@ fun PizzaItem(
                 onItemClicked()
             }
     ) {
+        println("${pizza.img}")
         Image(
             painter = painter,
             contentDescription = "Pizza Image",
