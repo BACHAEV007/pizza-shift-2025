@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class IngredientModel(
     val name: IngredientTypeModel,
-    val cost: Double,
+    val cost: Int,
     val img: String
 
 )
