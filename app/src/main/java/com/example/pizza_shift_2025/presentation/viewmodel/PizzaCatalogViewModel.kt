@@ -28,10 +28,8 @@ class PizzaCatalogViewModel(
                 val catalog = getPizzaCatalogUseCase()
                 _state.value = PizzaCatalogState.Content(catalog)
             } catch (ce: CancellationException) {
-                Log.d("PENIS","${ce}")
                 throw ce
             } catch (ex: Exception) {
-                Log.d("PENIS","${ex}")
                 _state.value = PizzaCatalogState.Failure(ex.localizedMessage.orEmpty())
             }
         }

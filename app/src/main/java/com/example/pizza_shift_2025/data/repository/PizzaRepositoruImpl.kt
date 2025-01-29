@@ -10,7 +10,6 @@ class PizzaRepositoryImpl(
     private val pizzaApi: PizzaApi
 ): PizzaRepository {
     override suspend fun getPizzaCatalog(): List<Pizza> {
-        Log.d("PENIS","${pizzaApi.getPizzaCatalog().catalog[1].img}")
         return (pizzaApi.getPizzaCatalog().catalog.map { it.toDomainModel() })
     }
 }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">pizza-shift-2025</string>
     <string name="pizza_title">Пицца</string>
+    <string name="pizza_cost">от %1$s ₽</string>
 </resources>

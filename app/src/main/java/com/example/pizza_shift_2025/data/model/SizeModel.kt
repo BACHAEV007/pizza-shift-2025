@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SizeModel(
     val name: SizeTypeModel,
-    val price: Double
+    val price: Int
 )
