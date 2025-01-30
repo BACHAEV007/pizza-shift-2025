@@ -5,23 +5,62 @@ import androidx.compose.ui.Modifier
 import com.example.pizza_shift_2025.domain.usecase.GetPizzaCatalogUseCase
 import com.example.pizza_shift_2025.presentation.ui.CatalogScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.pizza_shift_2025.presentation.screen.Screen
 import com.example.pizza_shift_2025.presentation.ui.DetailScreen
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaCatalogViewModel
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaCatalogViewModelFactory
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaDetailViewModel
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaDetailViewModelFactory
-import java.lang.Class
 
 @Composable
 fun MainScreen(
     getPizzaCatalogUseCase: GetPizzaCatalogUseCase,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController
 ) {
-    val viewModel: PizzaCatalogViewModel = viewModel(
-        factory = PizzaCatalogViewModelFactory(getPizzaCatalogUseCase)
-    )
-    val viewModelD: PizzaDetailViewModel = viewModel(
-        factory = PizzaDetailViewModelFactory(getPizzaCatalogUseCase)
-    )
-    DetailScreen(modifier, viewModelD, onItemSelected = {})
+    NavHost(navController = navController, startDestination = Screen.CatalogScreen.route) {
+        composable(Screen.CatalogScreen.route) {
+            val viewModel: PizzaCatalogViewModel = viewModel(
+                factory = PizzaCatalogViewModelFactory(getPizzaCatalogUseCase)
+            )
+            CatalogScreen(
+                modifier,
+                viewModel,
+                onItemSelected = { pizzaId ->
+                    navController.navigate(Screen.PizzaDetailScreen.createRoute(pizzaId))
+                },
+            )
+        }
+        composable(
+            route = Screen.PizzaDetailScreen.route,
+            arguments = listOf(navArgument("id") {
+                type = NavType.StringType
+            })
+        ) { backStackEntry ->
+            val pizzaId = backStackEntry.arguments?.getString("id") ?: return@composable
+
+            val viewModel: PizzaDetailViewModel = viewModel(
+                factory = PizzaDetailViewModelFactory(getPizzaCatalogUseCase)
+            )
+
+            DetailScreen(
+                modifier,
+                viewModel,
+                pizzaId,
+                onItemSelected = {},
+                goToCatalogScreen = {
+                    navController.navigate(Screen.CatalogScreen.route) {
+                        popUpTo(Screen.CatalogScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+    }
 }

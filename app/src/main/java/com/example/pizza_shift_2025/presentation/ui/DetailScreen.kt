@@ -33,11 +33,13 @@ import com.example.pizza_shift_2025.presentation.viewmodel.PizzaDetailViewModel
 fun DetailScreen(
     modifier: Modifier = Modifier,
     viewModel: PizzaDetailViewModel,
-    onItemSelected: () -> Unit
+    pizzaId: String,
+    onItemSelected: () -> Unit,
+    goToCatalogScreen: () -> Unit
 ) {
     val pizzaState by viewModel.state.collectAsState()
     LaunchedEffect(Unit) {
-        viewModel.loadCatalog()
+        viewModel.getPizza(pizzaId)
     }
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -47,7 +49,7 @@ fun DetailScreen(
                 .padding(vertical = 12.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { Unit }, modifier = Modifier.size(24.dp)) {
+            IconButton(onClick = { goToCatalogScreen() }, modifier = Modifier.size(24.dp)) {
                 Icon(
                     painter = painterResource(id = R.drawable.arrow_left),
                     contentDescription = "Arrow Left",
@@ -56,7 +58,6 @@ fun DetailScreen(
             }
             Spacer(Modifier.size(32.dp))
             Text(
-
                 text = stringResource(R.string.pizza_title),
                 style = MaterialTheme.typography.labelLarge,
                 fontSize = 24.sp

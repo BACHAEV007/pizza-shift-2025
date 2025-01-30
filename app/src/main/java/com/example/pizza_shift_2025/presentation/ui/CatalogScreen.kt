@@ -19,7 +19,11 @@ import com.example.pizza_shift_2025.presentation.state.PizzaCatalogState
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaCatalogViewModel
 
 @Composable
-fun CatalogScreen(modifier: Modifier = Modifier, viewModel: PizzaCatalogViewModel, onItemSelected: () -> Unit) {
+fun CatalogScreen(
+    modifier: Modifier = Modifier,
+    viewModel: PizzaCatalogViewModel,
+    onItemSelected: (String) -> Unit
+) {
     val catalogState by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -28,7 +32,9 @@ fun CatalogScreen(modifier: Modifier = Modifier, viewModel: PizzaCatalogViewMode
 
     Column(modifier = modifier.fillMaxSize()) {
         Text(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp, horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp, horizontal = 16.dp),
             text = stringResource(R.string.pizza_title),
             style = MaterialTheme.typography.labelLarge,
             fontSize = 32.sp

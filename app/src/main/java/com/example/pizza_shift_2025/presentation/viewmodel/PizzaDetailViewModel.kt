@@ -16,17 +16,20 @@ class PizzaDetailViewModel(
 
     private val _state = MutableStateFlow<PizzaDetailState>(PizzaDetailState.Initial)
     val state: StateFlow<PizzaDetailState> = _state
-    init {
-        loadCatalog()
-    }
 
-    fun loadCatalog() {
+    fun getPizza(id: String) {
         viewModelScope.launch {
             _state.value = PizzaDetailState.Loading
 
             try {
                 val catalog = getPizzaCatalogUseCase()
-                _state.value = PizzaDetailState.Content(catalog[0])
+                val pizza = catalog.find { it.id == id }
+
+                if (pizza != null) {
+                    _state.value = PizzaDetailState.Content(pizza)
+                } else {
+                    _state.value = PizzaDetailState.Failure("Pizza not found.")
+                }
             } catch (ce: CancellationException) {
                 throw ce
             } catch (ex: Exception) {

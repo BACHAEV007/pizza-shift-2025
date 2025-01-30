@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.pizza_shift_2025.data.network.PizzaApi
 import com.example.pizza_shift_2025.data.repository.PizzaRepositoryImpl
 import com.example.pizza_shift_2025.domain.repository.PizzaRepository
@@ -27,8 +29,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Pizzashift2025Theme {
+                val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                MainScreen(getPizzaCatalogUseCase, modifier = Modifier.padding(innerPadding))
+                    MainScreen(
+                        getPizzaCatalogUseCase,
+                        modifier = Modifier.padding(innerPadding),
+                        navController
+                    )
                 }
             }
         }
