@@ -2,4 +2,9 @@
     <string name="app_name">pizza-shift-2025</string>
     <string name="pizza_title">Пицца</string>
     <string name="pizza_cost">от %1$s ₽</string>
+    <string name="little">Маленькая</string>
+    <string name="medium">Средняя</string>
+    <string name="large">Большая</string>
+    <string name="add_like_taste">Добавить по вкусу</string>
+    <string name="cost">%1$s ₽</string>
 </resources>
