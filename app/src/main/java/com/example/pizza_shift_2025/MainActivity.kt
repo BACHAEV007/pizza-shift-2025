@@ -8,13 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.example.pizza_shift_2025.data.network.PizzaApi
 import com.example.pizza_shift_2025.data.repository.PizzaRepositoryImpl
 import com.example.pizza_shift_2025.domain.repository.PizzaRepository
 import com.example.pizza_shift_2025.domain.usecase.GetPizzaCatalogUseCase
+import com.example.pizza_shift_2025.presentation.navigation.MainScreen
+import com.example.pizza_shift_2025.presentation.ui.BottomNavigationBar
 import com.example.pizza_shift_2025.ui.theme.Pizzashift2025Theme
-import retrofit2.create
-import java.lang.Class
 
 class MainActivity : ComponentActivity() {
     private val networkModule = NetworkModule()
@@ -27,8 +28,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Pizzashift2025Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                MainScreen(getPizzaCatalogUseCase, modifier = Modifier.padding(innerPadding))
+                val navController = rememberNavController()
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        BottomNavigationBar(
+                            navController = navController
+                        )
+                    }
+                ) { innerPadding ->
+                    MainScreen(
+                        getPizzaCatalogUseCase,
+                        modifier = Modifier.padding(innerPadding),
+                        navController = navController
+                    )
                 }
             }
         }

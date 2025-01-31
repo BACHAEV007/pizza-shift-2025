@@ -30,7 +30,7 @@ import com.example.pizza_shift_2025.domain.entity.Pizza
 @Composable
 fun CatalogContentComponent(
     catalog: List<Pizza>,
-    onItemClicked: () -> Unit
+    onItemClicked: (String) -> Unit
 ){
     LazyColumn (
         modifier = Modifier.fillMaxHeight()
@@ -40,7 +40,7 @@ fun CatalogContentComponent(
             PizzaItem(
                 modifier = Modifier,
                 pizza,
-                onItemClicked = { }
+                onItemClicked = onItemClicked
             )
         }
     }
@@ -50,7 +50,7 @@ fun CatalogContentComponent(
 fun PizzaItem(
     modifier: Modifier,
     pizza: Pizza,
-    onItemClicked: () -> Unit
+    onItemClicked: (String) -> Unit
 ) {
     val painter = rememberImagePainter(pizza.img)
 
@@ -59,10 +59,9 @@ fun PizzaItem(
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clickable {
-                onItemClicked()
+                onItemClicked(pizza.id)
             }
     ) {
-        println("${pizza.img}")
         Image(
             painter = painter,
             contentDescription = "Pizza Image",
