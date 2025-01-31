@@ -16,7 +16,8 @@ class BasketRepositoryImpl (
         db.PizzaDao().insert(mapper.toPizzaEntity(pizza))
 
     override suspend fun getBasket(): List<Pizza> {
-        TODO("Not yet implemented")
+        val pizzaEntities = db.PizzaDao().getBasket()
+        return pizzaEntities.map { mapper.toPizza(it) }
     }
 
 }
