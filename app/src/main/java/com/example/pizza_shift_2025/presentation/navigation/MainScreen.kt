@@ -15,6 +15,8 @@ import com.example.pizza_shift_2025.presentation.ui.BasketScreen
 import com.example.pizza_shift_2025.presentation.ui.DetailScreen
 import com.example.pizza_shift_2025.presentation.ui.OrderScreen
 import com.example.pizza_shift_2025.presentation.ui.ProfileScreen
+import com.example.pizza_shift_2025.presentation.viewmodel.BasketViewModel
+import com.example.pizza_shift_2025.presentation.viewmodel.BasketViewModelFactory
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaCatalogViewModel
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaCatalogViewModelFactory
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaDetailViewModel
@@ -70,7 +72,20 @@ fun MainScreen(
             OrderScreen()
         }
         composable(Screen.BasketScreen.route) {
-            BasketScreen()
+            val viewModel: BasketViewModel = viewModel(
+                factory = BasketViewModelFactory(getPizzaCatalogUseCase)
+            )
+            BasketScreen(
+                modifier,
+                viewModel,
+                orderButtonSelected = {},
+                goToCatalogScreen = {
+                    navController.navigate(Screen.CatalogScreen.route) {
+                        popUpTo(Screen.CatalogScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                })
         }
         composable(Screen.ProfileScreen.route) {
             ProfileScreen()

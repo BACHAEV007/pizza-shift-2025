@@ -10,4 +10,7 @@
     <color name="gray">#344051</color>
     <color name="light_gray">#CED2DA</color>
     <color name="click_button">#FFF3F4F6</color>
+    <color name="orange">#F4511E</color>
+    <color name="extra_light_grey">#E3E5E5</color>
+    <color name="underline_text">#97A1AF</color>
 </resources>

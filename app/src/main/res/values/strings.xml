@@ -7,4 +7,11 @@
     <string name="large">Большая</string>
     <string name="add_like_taste">Добавить по вкусу</string>
     <string name="cost">%1$s ₽</string>
+    <string name="basket">Корзина</string>
+    <string name="order_cost">Стоимость заказа:</string>
+    <string name="order_price">%1$s р</string>
+    <string name="setup_order">Оформить заказ</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="edit">Изменить</string>
 </resources>
