@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.pizza_shift_2025.AppContext
 import com.example.pizza_shift_2025.data.dao.PizzaDao
 import com.example.pizza_shift_2025.data.dbconverter.DoughConverter
 import com.example.pizza_shift_2025.data.dbconverter.PizzaConverter
@@ -27,7 +28,7 @@ abstract class PizzaDataBase : RoomDatabase() {
             }
             synchronized(this){
                 val instance = Room.databaseBuilder(
-                    context.applicationContext,
+                    AppContext.context,
                     PizzaDataBase::class.java,
                     "movie_database"
                 ).build()

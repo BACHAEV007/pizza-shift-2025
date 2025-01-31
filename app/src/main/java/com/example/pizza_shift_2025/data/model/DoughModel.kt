@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DoughModel(
     val name: DoughTypeModel,
-    val price: Double
+    val price: Int
 )

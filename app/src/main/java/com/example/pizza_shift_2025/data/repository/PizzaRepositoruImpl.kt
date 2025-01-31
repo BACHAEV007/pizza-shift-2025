@@ -9,7 +9,7 @@ import com.example.pizza_shift_2025.domain.repository.PizzaRepository
 class PizzaRepositoryImpl(
     private val pizzaApi: PizzaApi
 ): PizzaRepository {
-    override suspend fun getPizzaCatalog(): List<Pizza> {
-        return (pizzaApi.getPizzaCatalog().catalog.map { it.toDomainModel() })
-    }
+    override suspend fun getPizzaCatalog(): List<Pizza> =
+        (pizzaApi.getPizzaCatalog().catalog.map { it.toDomainModel() })
+
 }

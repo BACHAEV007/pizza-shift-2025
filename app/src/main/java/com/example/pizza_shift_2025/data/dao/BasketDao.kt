@@ -14,5 +14,5 @@ interface PizzaDao {
     suspend fun insert(pizza: PizzaEntity)
 
     @Query("SELECT * FROM pizza")
-    suspend fun getAllPizzas(): List<PizzaEntity>
+    suspend fun getBasket(): List<PizzaEntity>
 }
