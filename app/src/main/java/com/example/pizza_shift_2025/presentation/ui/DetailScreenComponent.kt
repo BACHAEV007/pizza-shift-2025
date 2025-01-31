@@ -11,9 +11,14 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -45,44 +50,77 @@ import com.example.pizza_shift_2025.domain.entity.Pizza
 @Composable
 fun DetailScreenComponent(
     body: Pizza,
-    onItemClicked: () -> Unit
-){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
+    onItemClicked: (pizza: Pizza) -> Unit
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Spacer(modifier = Modifier
-            .size(24.dp)
-            .fillMaxWidth())
-        val painter = rememberImagePainter(body.img)
-        Image(
-            painter = painter,
-            contentDescription = "Pizza Image",
-            modifier = Modifier
-                .size(220.dp)
-                .aspectRatio(1f)
-                .align(Alignment.CenterHorizontally)
-        )
-        Spacer(modifier = Modifier.size(32.dp))
-        DetailDescription(body)
-        Spacer(modifier = Modifier.size(24.dp))
-        LabelRow()
-        Spacer(modifier = Modifier.size(24.dp))
-        Text(
-            text = stringResource(R.string.add_like_taste),
-            fontSize = 16.sp,
-            lineHeight = 24.sp,
-            style = MaterialTheme.typography.labelSmall
-        )
-        Spacer(modifier = Modifier.size(24.dp))
-        IngredientsGrid(body.toppings)
+        item(span = { GridItemSpan(3) }) {
+            Spacer(modifier = Modifier.size(24.dp))
+        }
+        item(span = { GridItemSpan(3) }) {
+            val painter = rememberImagePainter(body.img)
+            Column {
+                Image(
+                    painter = painter,
+                    contentDescription = "Pizza Image",
+                    modifier = Modifier
+                        .size(220.dp)
+                        .aspectRatio(1f)
+                        .align(Alignment.CenterHorizontally)
+
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        }
+        item(span = { GridItemSpan(3) }) {
+            Column {
+                DetailDescription(body, modifier = Modifier)
+                }
+        }
+        item(span = { GridItemSpan(3) }) {
+            LabelRow()
+        }
+        item(span = { GridItemSpan(3) }) {
+            Button(
+                onClick = { onItemClicked(body) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                contentPadding = PaddingValues(vertical = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.orange)
+                )
+            ) {
+                Text(text = stringResource(R.string.setup_order), color = Color.White, fontSize = 16.sp)
+            }
+        }
+        item(span = { GridItemSpan(3) }) {
+            Text(
+                text = stringResource(R.string.add_like_taste),
+                fontSize = 16.sp,
+                lineHeight = 24.sp,
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
+        items(body.toppings) { ingredient ->
+            IngredientItem(ingredient)
+        }
     }
 }
 
+
 @Composable
-fun DetailDescription(body: Pizza){
-    Column {
+fun DetailDescription(body: Pizza, modifier: Modifier){
+    Column(
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         Text(
             text = body.name,
             modifier = Modifier.padding(bottom = 8.dp),
