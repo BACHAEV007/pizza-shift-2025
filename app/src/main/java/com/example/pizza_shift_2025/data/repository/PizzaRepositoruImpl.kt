@@ -11,5 +11,4 @@ class PizzaRepositoryImpl(
 ): PizzaRepository {
     override suspend fun getPizzaCatalog(): List<Pizza> =
         (pizzaApi.getPizzaCatalog().catalog.map { it.toDomainModel() })
-
 }

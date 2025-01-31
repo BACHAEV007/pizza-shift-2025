@@ -6,12 +6,12 @@ import com.google.gson.Gson
 
 class SizeConverter {
     @TypeConverter
-    fun fromSize(value: SizeEntity): String {
-        return Gson().toJson(value)
+    fun fromSize(size: SizeEntity): String {
+        return Gson().toJson(size)
     }
 
     @TypeConverter
-    fun toSize(value: String): SizeEntity {
-        return Gson().fromJson(value, SizeEntity::class.java)
+    fun toSize(data: String): SizeEntity {
+        return Gson().fromJson(data, SizeEntity::class.java)
     }
 }

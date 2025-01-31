@@ -47,9 +47,7 @@ fun BasketScreen(
 
 ) {
     val pizzaState by viewModel.state.collectAsState()
-    LaunchedEffect(Unit) {
-        viewModel.loadCatalog()
-    }
+
     fun onIncreasePizzaQuantity(pizzaId: String) {
 //        viewModel.increasePizzaQuantity(pizzaId)
     }

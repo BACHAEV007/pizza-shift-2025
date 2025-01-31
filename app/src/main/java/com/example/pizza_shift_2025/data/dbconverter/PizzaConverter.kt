@@ -8,13 +8,13 @@ import com.google.gson.reflect.TypeToken
 
 class PizzaConverter {
     @TypeConverter
-    fun fromToppingList(value: List<ToppingEntity>): String {
-        return Gson().toJson(value)
+    fun fromToppingList(toppings: List<ToppingEntity>): String {
+        return Gson().toJson(toppings)
     }
 
     @TypeConverter
-    fun toToppingList(value: String): List<ToppingEntity> {
+    fun toToppingList(data: String): List<ToppingEntity> {
         val listType = object : TypeToken<List<ToppingEntity>>() {}.type
-        return Gson().fromJson(value, listType)
+        return Gson().fromJson(data, listType)
     }
 }

@@ -10,6 +10,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.pizza_shift_2025.domain.usecase.AddPizzaToBasketUseCase
+import com.example.pizza_shift_2025.domain.usecase.GetBasketUseCase
 import com.example.pizza_shift_2025.presentation.screen.Screen
 import com.example.pizza_shift_2025.presentation.ui.BasketScreen
 import com.example.pizza_shift_2025.presentation.ui.DetailScreen
@@ -25,6 +27,8 @@ import com.example.pizza_shift_2025.presentation.viewmodel.PizzaDetailViewModelF
 @Composable
 fun MainScreen(
     getPizzaCatalogUseCase: GetPizzaCatalogUseCase,
+    getBasketUseCase: GetBasketUseCase,
+    addPizzaToBasketUseCase: AddPizzaToBasketUseCase,
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
@@ -51,14 +55,13 @@ fun MainScreen(
             val pizzaId = backStackEntry.arguments?.getString("id") ?: return@composable
 
             val viewModel: PizzaDetailViewModel = viewModel(
-                factory = PizzaDetailViewModelFactory(getPizzaCatalogUseCase)
+                factory = PizzaDetailViewModelFactory(getPizzaCatalogUseCase, addPizzaToBasketUseCase)
             )
 
             DetailScreen(
                 modifier,
                 viewModel,
                 pizzaId,
-                onItemSelected = {},
                 goToCatalogScreen = {
                     navController.navigate(Screen.CatalogScreen.route) {
                         popUpTo(Screen.CatalogScreen.route) {
@@ -73,7 +76,7 @@ fun MainScreen(
         }
         composable(Screen.BasketScreen.route) {
             val viewModel: BasketViewModel = viewModel(
-                factory = BasketViewModelFactory(getPizzaCatalogUseCase)
+                factory = BasketViewModelFactory(getBasketUseCase)
             )
             BasketScreen(
                 modifier,

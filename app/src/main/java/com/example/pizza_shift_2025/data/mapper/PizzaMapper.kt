@@ -11,14 +11,16 @@ import com.example.pizza_shift_2025.domain.entity.IngredientType
 import com.example.pizza_shift_2025.domain.entity.Pizza
 import com.example.pizza_shift_2025.domain.entity.Size
 import com.example.pizza_shift_2025.domain.entity.SizeType
+import java.util.UUID
 
 class PizzaMapper {
 
     fun toPizzaEntity(pizza: Pizza): PizzaEntity {
         return PizzaEntity(
-            id = pizza.id,
+            id = UUID.randomUUID().toString(),
             name = pizza.name,
             price = 0,
+            img = pizza.img,
             description = pizza.description,
             toppings = pizza.toppings.map { toToppingEntity(it) },
             size = toSizeEntity(pizza.sizes.first()),
@@ -58,7 +60,7 @@ class PizzaMapper {
             allergens = emptyList(),
             calories = 0,
             carbohydrates = "0g",
-            img = "",
+            img = pizzaEntity.img,
             ingredients = emptyList(),
             isGlutenFree = false,
             isHit = false,

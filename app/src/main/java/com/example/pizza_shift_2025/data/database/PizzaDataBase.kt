@@ -13,7 +13,7 @@ import com.example.pizza_shift_2025.data.dbconverter.SizeConverter
 import com.example.pizza_shift_2025.data.dbentity.PizzaEntity
 
 @Database(entities = [PizzaEntity::class],
-    version = 1)
+    version = 2)
 @TypeConverters(PizzaConverter::class, SizeConverter::class, DoughConverter::class)
 abstract class PizzaDataBase : RoomDatabase() {
     abstract fun PizzaDao(): PizzaDao
@@ -28,10 +28,10 @@ abstract class PizzaDataBase : RoomDatabase() {
             }
             synchronized(this){
                 val instance = Room.databaseBuilder(
-                    AppContext.context,
+                    context.applicationContext,
                     PizzaDataBase::class.java,
-                    "movie_database"
-                ).build()
+                    "pizza_database"
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

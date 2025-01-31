@@ -1,7 +1,10 @@
 package com.example.pizza_shift_2025.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pizza_shift_2025.domain.entity.Pizza
+import com.example.pizza_shift_2025.domain.usecase.AddPizzaToBasketUseCase
 import com.example.pizza_shift_2025.domain.usecase.GetPizzaCatalogUseCase
 import com.example.pizza_shift_2025.presentation.state.PizzaCatalogState
 import com.example.pizza_shift_2025.presentation.state.PizzaDetailState
@@ -11,7 +14,8 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 
 class PizzaDetailViewModel(
-    private val getPizzaCatalogUseCase: GetPizzaCatalogUseCase
+    private val getPizzaCatalogUseCase: GetPizzaCatalogUseCase,
+    private val addPizzaToBasketUseCase: AddPizzaToBasketUseCase
 ): ViewModel() {
 
     private val _state = MutableStateFlow<PizzaDetailState>(PizzaDetailState.Initial)
@@ -34,6 +38,18 @@ class PizzaDetailViewModel(
                 throw ce
             } catch (ex: Exception) {
                 _state.value = PizzaDetailState.Failure(ex.localizedMessage.orEmpty())
+            }
+        }
+    }
+    fun addToBasket(pizza: Pizza) {
+        Log.d("PizzaDetailViewModel", "addToBasket вызвана с пиццей: $pizza")
+        viewModelScope.launch {
+            try {
+                Log.d("PizzaDetailViewModel", "Запуск добавления пиццы в корзину...")
+                addPizzaToBasketUseCase(pizza)
+                Log.d("PizzaDetailViewModel", "Пицца успешно добавлена в корзину.")
+            } catch (e: Exception) {
+                Log.e("PizzaDetailViewModel", "Ошибка при добавлении пиццы в корзину: ${e.localizedMessage}")
             }
         }
     }
