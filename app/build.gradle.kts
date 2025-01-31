@@ -77,4 +77,6 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.coil.compose)
     implementation(libs.material3)
+    implementation(libs.androidx.room.runtime)
+    implementation("com.google.code.gson:gson:2.10.1")
 }

@@ -76,7 +76,7 @@ fun DetailScreenComponent(
             style = MaterialTheme.typography.labelSmall
         )
         Spacer(modifier = Modifier.size(24.dp))
-        IngredientsGrid(body.ingredients)
+        IngredientsGrid(body.toppings)
     }
 }
 
