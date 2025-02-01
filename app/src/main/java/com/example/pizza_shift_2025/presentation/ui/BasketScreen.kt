@@ -44,7 +44,6 @@ fun BasketScreen(
     viewModel: BasketViewModel,
     orderButtonSelected: () -> Unit,
     goToCatalogScreen: () -> Unit,
-
 ) {
     val pizzaState by viewModel.state.collectAsState()
 

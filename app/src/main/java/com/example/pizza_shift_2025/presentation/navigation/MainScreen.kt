@@ -14,11 +14,14 @@ import com.example.pizza_shift_2025.domain.usecase.AddPizzaToBasketUseCase
 import com.example.pizza_shift_2025.domain.usecase.GetBasketUseCase
 import com.example.pizza_shift_2025.presentation.screen.Screen
 import com.example.pizza_shift_2025.presentation.ui.BasketScreen
+import com.example.pizza_shift_2025.presentation.ui.CheckoutScreen
 import com.example.pizza_shift_2025.presentation.ui.DetailScreen
 import com.example.pizza_shift_2025.presentation.ui.OrderScreen
 import com.example.pizza_shift_2025.presentation.ui.ProfileScreen
 import com.example.pizza_shift_2025.presentation.viewmodel.BasketViewModel
 import com.example.pizza_shift_2025.presentation.viewmodel.BasketViewModelFactory
+import com.example.pizza_shift_2025.presentation.viewmodel.CheckoutViewModel
+import com.example.pizza_shift_2025.presentation.viewmodel.CheckoutViewModelFactory
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaCatalogViewModel
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaCatalogViewModelFactory
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaDetailViewModel
@@ -81,7 +84,11 @@ fun MainScreen(
             BasketScreen(
                 modifier,
                 viewModel,
-                orderButtonSelected = {},
+                orderButtonSelected = {navController.navigate(Screen.CheckoutScreen.route) {
+                    popUpTo(Screen.CheckoutScreen.route) {
+                        inclusive = true
+                    }
+                }},
                 goToCatalogScreen = {
                     navController.navigate(Screen.CatalogScreen.route) {
                         popUpTo(Screen.CatalogScreen.route) {
@@ -93,7 +100,25 @@ fun MainScreen(
         composable(Screen.ProfileScreen.route) {
             ProfileScreen()
         }
+        composable(Screen.CheckoutScreen.route){
+            val viewModel: CheckoutViewModel = viewModel(
+                factory = CheckoutViewModelFactory(getBasketUseCase)
+            )
+            CheckoutScreen(
+                modifier,
+                goToBasketScreen = {
+                    navController.navigate(Screen.BasketScreen.route) {
+                        popUpTo(Screen.BasketScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                goToCardCheckoutScreen = { navController.navigate(Screen.PizzaDetailScreen.route) },
+                viewModel
+            )
+        }
     }
 
 }
+
 
