@@ -4,6 +4,8 @@ import com.example.pizza_shift_2025.domain.entity.PizzaPayment
 
 sealed interface CheckoutState {
 
+    data object Initial : CheckoutState
+
     data object Loading : CheckoutState
 
     data object FirstPart : CheckoutState
@@ -12,7 +14,7 @@ sealed interface CheckoutState {
 
     data class Success(
         val paymentPrice: String,
-        val pizzasDescription: String,
+        val description: String,
         val pizzaPayment: PizzaPayment
     ) : CheckoutState
 

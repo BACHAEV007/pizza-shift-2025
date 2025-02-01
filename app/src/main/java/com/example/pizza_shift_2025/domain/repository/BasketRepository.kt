@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface BasketRepository {
     suspend fun addPizzaToBasket(pizza: BasketPizza)
-    fun getBasket() : Flow<List<Pizza>>
+    fun getBasket() : Flow<List<BasketPizza>>
 }

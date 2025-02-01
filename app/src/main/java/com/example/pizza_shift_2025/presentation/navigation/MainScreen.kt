@@ -11,7 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.pizza_shift_2025.domain.usecase.AddPizzaToBasketUseCase
+import com.example.pizza_shift_2025.domain.usecase.CountPizzaPriceUseCase
 import com.example.pizza_shift_2025.domain.usecase.GetBasketUseCase
+import com.example.pizza_shift_2025.domain.usecase.OrderPizzaUseCase
 import com.example.pizza_shift_2025.presentation.screen.Screen
 import com.example.pizza_shift_2025.presentation.ui.BasketScreen
 import com.example.pizza_shift_2025.presentation.ui.CheckoutScreen
@@ -29,15 +31,19 @@ import com.example.pizza_shift_2025.presentation.viewmodel.PizzaDetailViewModelF
 
 @Composable
 fun MainScreen(
+    orderPizzaUseCase: OrderPizzaUseCase,
+    countPizzaPriceUseCase: CountPizzaPriceUseCase,
     getPizzaCatalogUseCase: GetPizzaCatalogUseCase,
     getBasketUseCase: GetBasketUseCase,
     addPizzaToBasketUseCase: AddPizzaToBasketUseCase,
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    onBottomBarVisibilityChanged: (Boolean) -> Unit
 ) {
 
     NavHost(navController = navController, startDestination = Screen.CatalogScreen.route) {
         composable(Screen.CatalogScreen.route) {
+            onBottomBarVisibilityChanged(true)
             val viewModel: PizzaCatalogViewModel = viewModel(
                 factory = PizzaCatalogViewModelFactory(getPizzaCatalogUseCase)
             )
@@ -55,6 +61,7 @@ fun MainScreen(
                 type = NavType.StringType
             })
         ) { backStackEntry ->
+            onBottomBarVisibilityChanged(true)
             val pizzaId = backStackEntry.arguments?.getString("id") ?: return@composable
 
             val viewModel: PizzaDetailViewModel = viewModel(
@@ -78,17 +85,24 @@ fun MainScreen(
             OrderScreen()
         }
         composable(Screen.BasketScreen.route) {
+            onBottomBarVisibilityChanged(true)
             val viewModel: BasketViewModel = viewModel(
-                factory = BasketViewModelFactory(getBasketUseCase)
+                factory = BasketViewModelFactory(getBasketUseCase, countPizzaPriceUseCase)
             )
             BasketScreen(
                 modifier,
                 viewModel,
-                orderButtonSelected = {navController.navigate(Screen.CheckoutScreen.route) {
+                orderButtonSelected = {
+
+                    navController.navigate(Screen.CheckoutScreen.route) { onBottomBarVisibilityChanged(false)
                     popUpTo(Screen.CheckoutScreen.route) {
                         inclusive = true
+
                     }
-                }},
+                        onBottomBarVisibilityChanged(false)
+                }
+
+                },
                 goToCatalogScreen = {
                     navController.navigate(Screen.CatalogScreen.route) {
                         popUpTo(Screen.CatalogScreen.route) {
@@ -102,18 +116,23 @@ fun MainScreen(
         }
         composable(Screen.CheckoutScreen.route){
             val viewModel: CheckoutViewModel = viewModel(
-                factory = CheckoutViewModelFactory(getBasketUseCase)
+                factory = CheckoutViewModelFactory(getBasketUseCase, orderPizzaUseCase, countPizzaPriceUseCase)
             )
+            onBottomBarVisibilityChanged(false)
             CheckoutScreen(
-                modifier,
-                goToBasketScreen = {
+                modifier = modifier,
+                goToBackScreen = {
+
                     navController.navigate(Screen.BasketScreen.route) {
                         popUpTo(Screen.BasketScreen.route) {
                             inclusive = true
+
                         }
+                        onBottomBarVisibilityChanged(true)
                     }
+
                 },
-                goToCardCheckoutScreen = { navController.navigate(Screen.PizzaDetailScreen.route) },
+                navController,
                 viewModel
             )
         }

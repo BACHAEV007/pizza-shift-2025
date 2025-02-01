@@ -16,4 +16,14 @@
     <string name="edit">Изменить</string>
     <string name="small">Маленькая</string>
     <string name="your_data">Ваши данные</string>
+    <string name="lastname">Фамилия*</string>
+    <string name="name">Имя*</string>
+    <string name="phone">Номер телефона*</string>
+    <string name="city_hint">Город</string>
+    <string name="error_title">Ошибка!</string>
+    <string name="error_try_again">Попробуйте снова</string>
+    <string name="checkout_second_screen">Карта оплаты</string>
+    <string name="card_pan_hint">Номер*</string>
+    <string name="card_date_hint">Срок*</string>
+    <string name="card_cvv_hint">CVV*</string>
 </resources>

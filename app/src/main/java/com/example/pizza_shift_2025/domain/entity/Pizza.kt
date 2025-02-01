@@ -1,5 +1,6 @@
 package com.example.pizza_shift_2025.domain.entity
 
+
 data class Pizza(
     val allergens: List<String>,
     val calories: Int,
