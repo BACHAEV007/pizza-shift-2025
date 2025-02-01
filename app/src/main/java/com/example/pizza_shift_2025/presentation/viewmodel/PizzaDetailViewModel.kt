@@ -3,7 +3,13 @@ package com.example.pizza_shift_2025.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pizza_shift_2025.domain.entity.BasketPizza
+import com.example.pizza_shift_2025.domain.entity.Dough
+import com.example.pizza_shift_2025.domain.entity.DoughType
+import com.example.pizza_shift_2025.domain.entity.Ingredient
 import com.example.pizza_shift_2025.domain.entity.Pizza
+import com.example.pizza_shift_2025.domain.entity.Size
+import com.example.pizza_shift_2025.domain.entity.SizeType
 import com.example.pizza_shift_2025.domain.usecase.AddPizzaToBasketUseCase
 import com.example.pizza_shift_2025.domain.usecase.GetPizzaCatalogUseCase
 import com.example.pizza_shift_2025.presentation.state.PizzaCatalogState
@@ -41,16 +47,32 @@ class PizzaDetailViewModel(
             }
         }
     }
-    fun addToBasket(pizza: Pizza) {
-        Log.d("PizzaDetailViewModel", "addToBasket вызвана с пиццей: $pizza")
+    fun addToBasket(pizza: Pizza, size: Size, dough: Dough, toppings: List<Ingredient>) {
+
         viewModelScope.launch {
             try {
-                Log.d("PizzaDetailViewModel", "Запуск добавления пиццы в корзину...")
-                addPizzaToBasketUseCase(pizza)
-                Log.d("PizzaDetailViewModel", "Пицца успешно добавлена в корзину.")
+                val price = calculatePrice(size, dough, toppings)
+                addPizzaToBasketUseCase(
+                    BasketPizza(
+                        name = pizza.name,
+                        description = pizza.description,
+                        price = price,
+                        toppings = toppings,
+                        size = size,
+                        doughs = dough,
+                        img = pizza.img
+                    )
+                )
+
             } catch (e: Exception) {
-                Log.e("PizzaDetailViewModel", "Ошибка при добавлении пиццы в корзину: ${e.localizedMessage}")
+
             }
         }
+    }
+
+    private fun calculatePrice(size: Size, dough: Dough, toppings: List<Ingredient>): Int {
+        var totalPrice = size.price + dough.price
+        toppings.forEach { totalPrice += it.cost }
+        return totalPrice
     }
 }

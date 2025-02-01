@@ -45,16 +45,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.pizza_shift_2025.R
+import com.example.pizza_shift_2025.domain.entity.BasketPizza
+import com.example.pizza_shift_2025.domain.entity.Ingredient
 import com.example.pizza_shift_2025.domain.entity.Pizza
+import com.example.pizza_shift_2025.domain.entity.Size
+import com.example.pizza_shift_2025.domain.entity.SizeType
+import com.example.pizza_shift_2025.presentation.viewmodel.PizzaDetailViewModel
 
 @Composable
 fun DetailScreenComponent(
-    body: Pizza,
-    onItemClicked: (pizza: Pizza) -> Unit
+    pizzaState: Pizza,
+    viewModel: PizzaDetailViewModel
 ) {
+
+    var selectedSize by remember { mutableStateOf(pizzaState.sizes[0]) }
+    var selectedToppings by remember { mutableStateOf(emptyList<Ingredient>()) }
+    val selectedDough by remember { mutableStateOf(pizzaState.doughs[0]) }
+    var activeIndex by remember { mutableStateOf(0) }
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -62,7 +74,7 @@ fun DetailScreenComponent(
             Spacer(modifier = Modifier.size(24.dp))
         }
         item(span = { GridItemSpan(3) }) {
-            val painter = rememberImagePainter(body.img)
+            val painter = rememberImagePainter(pizzaState.img)
             Column {
                 Image(
                     painter = painter,
@@ -78,15 +90,26 @@ fun DetailScreenComponent(
         }
         item(span = { GridItemSpan(3) }) {
             Column {
-                DetailDescription(body, modifier = Modifier)
+                DetailDescription(pizzaState, modifier = Modifier, activeIndex)
                 }
         }
         item(span = { GridItemSpan(3) }) {
-            LabelRow()
+            LabelRow(
+                pizzaState,
+                activeIndex = activeIndex,
+                onSizeSelected = { size -> selectedSize = size },
+                onIndexChanged = { index ->
+                    activeIndex = index
+                }
+            )
         }
         item(span = { GridItemSpan(3) }) {
+            Spacer(modifier = Modifier.size(6.dp))
+        }
+        item(span = { GridItemSpan(3) }) {
+
             Button(
-                onClick = { onItemClicked(body) },
+                onClick = { viewModel.addToBasket(pizzaState, selectedSize, selectedDough, selectedToppings) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -96,8 +119,11 @@ fun DetailScreenComponent(
                     containerColor = colorResource(id = R.color.orange)
                 )
             ) {
-                Text(text = stringResource(R.string.setup_order), color = Color.White, fontSize = 16.sp)
+                Text(text = "Добавить в корзину", color = Color.White, fontSize = 16.sp)
             }
+        }
+        item(span = { GridItemSpan(3) }) {
+            Spacer(modifier = Modifier.size(6.dp))
         }
         item(span = { GridItemSpan(3) }) {
             Text(
@@ -107,15 +133,26 @@ fun DetailScreenComponent(
                 style = MaterialTheme.typography.labelSmall
             )
         }
-        items(body.toppings) { ingredient ->
-            IngredientItem(ingredient)
+        items(pizzaState.toppings) { ingredient ->
+            IngredientItem(
+                ingredient = ingredient,
+                isSelected = selectedToppings.contains(ingredient),
+                onIngredientClick = {
+                    selectedToppings = if (selectedToppings.contains(ingredient)) {
+                        selectedToppings - ingredient
+                    } else {
+                        selectedToppings + ingredient
+                    }
+                }
+            )
         }
     }
 }
 
 
 @Composable
-fun DetailDescription(body: Pizza, modifier: Modifier){
+fun DetailDescription(body: Pizza, modifier: Modifier, index: Int){
+    val sizeLabels = listOf("25 см", "30 см", "35 см")
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -130,7 +167,7 @@ fun DetailDescription(body: Pizza, modifier: Modifier){
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "30 см, традиционное тесто",
+            text = sizeLabels.get(index) + ", традиционное тесто",
             modifier = Modifier.padding(bottom = 8.dp),
             color = colorResource(id = R.color.gray),
             style = MaterialTheme.typography.bodySmall,
@@ -151,25 +188,33 @@ fun DetailDescription(body: Pizza, modifier: Modifier){
 }
 
 @Composable
-fun LabelRow() {
+fun LabelRow(
+    pizzaState: Pizza,
+    activeIndex: Int,
+    onSizeSelected: (Size) -> Unit,
+    onIndexChanged: (Int) -> Unit
+) {
     var activeIndex by remember { mutableStateOf(0) }
-    val buttonLabels = listOf(
-        stringResource(R.string.little),
-        stringResource(R.string.medium),
-        stringResource(R.string.large)
-    )
+    val sizeLabels =
+        listOf(
+            stringResource(R.string.small),
+            stringResource(R.string.medium),
+            stringResource(R.string.large)
+        )
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color(0xFFF3F4F6), shape = RoundedCornerShape(14.dp))
     ) {
-        repeat(3) { index ->
+        pizzaState.sizes.forEachIndexed { index, size ->
             LabelButton(
-                text = buttonLabels[index],
+                text = sizeLabels.getOrElse(index) { "" },
                 isActive = index == activeIndex,
                 modifier = Modifier.weight(1f),
                 onClick = {
                     activeIndex = if (activeIndex == index) -1 else index
+                    onSizeSelected(size)
+                    onIndexChanged(index)
                 }
             )
         }

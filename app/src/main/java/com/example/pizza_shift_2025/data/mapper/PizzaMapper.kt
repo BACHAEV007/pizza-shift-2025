@@ -4,6 +4,7 @@ import com.example.pizza_shift_2025.data.dbentity.DoughEntity
 import com.example.pizza_shift_2025.data.dbentity.PizzaEntity
 import com.example.pizza_shift_2025.data.dbentity.SizeEntity
 import com.example.pizza_shift_2025.data.dbentity.ToppingEntity
+import com.example.pizza_shift_2025.domain.entity.BasketPizza
 import com.example.pizza_shift_2025.domain.entity.Dough
 import com.example.pizza_shift_2025.domain.entity.DoughType
 import com.example.pizza_shift_2025.domain.entity.Ingredient
@@ -15,37 +16,37 @@ import java.util.UUID
 
 class PizzaMapper {
 
-    fun toPizzaEntity(pizza: Pizza): PizzaEntity {
+    fun toPizzaEntity(pizza: BasketPizza): PizzaEntity {
         return PizzaEntity(
             id = UUID.randomUUID().toString(),
             name = pizza.name,
-            price = 0,
+            price = pizza.price,
             img = pizza.img,
             description = pizza.description,
             toppings = pizza.toppings.map { toToppingEntity(it) },
-            size = toSizeEntity(pizza.sizes.first()),
-            doughs = toDoughEntity(pizza.doughs.first())
+            size = toSizeEntity(pizza.size),
+            doughs = toDoughEntity(pizza.doughs)
         )
     }
 
     private fun toToppingEntity(ingredient: Ingredient): ToppingEntity {
         return ToppingEntity(
             name = ingredient.name.name,
-            cost = 0
+            cost = ingredient.cost
         )
     }
 
     private fun toSizeEntity(size: Size): SizeEntity {
         return SizeEntity(
             name = size.name.name,
-            price = 0
+            price = size.price
         )
     }
 
     private fun toDoughEntity(dough: Dough): DoughEntity {
         return DoughEntity(
             name = dough.name.name,
-            price = 0
+            price = dough.price
         )
     }
 

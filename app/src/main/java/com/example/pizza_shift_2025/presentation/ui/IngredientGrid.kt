@@ -1,6 +1,7 @@
 package com.example.pizza_shift_2025.presentation.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,26 +33,12 @@ import com.example.pizza_shift_2025.domain.entity.Ingredient
 
 
 @Composable
-fun IngredientsGrid(ingredients: List<Ingredient>) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(ingredients) { ingredient ->
-            IngredientItem(ingredient)
-        }
-    }
-}
-
-@Composable
-fun IngredientItem(ingredient: Ingredient) {
+fun IngredientItem(ingredient: Ingredient, isSelected: Boolean, onIngredientClick: (Ingredient) -> Unit) {
     Column(
         modifier = Modifier
             .shadow(4.dp, RoundedCornerShape(16.dp))
             .clip(RoundedCornerShape(16.dp))
+            .clickable { onIngredientClick(ingredient) }
     ) {
         Card(
             shape = RoundedCornerShape(16.dp),

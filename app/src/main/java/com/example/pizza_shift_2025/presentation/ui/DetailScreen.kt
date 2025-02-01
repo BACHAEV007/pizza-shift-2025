@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pizza_shift_2025.R
+import com.example.pizza_shift_2025.domain.entity.BasketPizza
 import com.example.pizza_shift_2025.domain.entity.Pizza
 import com.example.pizza_shift_2025.domain.usecase.AddPizzaToBasketUseCase
 import com.example.pizza_shift_2025.presentation.state.PizzaCatalogState
@@ -44,9 +45,7 @@ fun DetailScreen(
         viewModel.getPizza(pizzaId)
     }
 
-    fun onItemSelected(pizza: Pizza) {
-        viewModel.addToBasket(pizza)
-    }
+
 
     Column(modifier = modifier.fillMaxSize()) {
         Row(
@@ -79,8 +78,8 @@ fun DetailScreen(
             is PizzaDetailState.Loading -> LoadingComponent()
 
             is PizzaDetailState.Content -> DetailScreenComponent(
-            body = state.detail,
-            onItemClicked = { onItemSelected(state.detail) }
+                pizzaState = state.detail,
+                viewModel
         )
             is PizzaDetailState.Failure -> Unit
         }
