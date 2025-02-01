@@ -5,6 +5,7 @@ import com.example.pizza_shift_2025.AppContext
 import com.example.pizza_shift_2025.data.database.PizzaDataBase
 import com.example.pizza_shift_2025.data.mapper.PizzaMapper
 import com.example.pizza_shift_2025.data.network.PizzaApi
+import com.example.pizza_shift_2025.domain.entity.BasketPizza
 import com.example.pizza_shift_2025.domain.entity.Pizza
 import com.example.pizza_shift_2025.domain.repository.BasketRepository
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,7 @@ class BasketRepositoryImpl (
     private val mapper: PizzaMapper
 ) : BasketRepository{
     private val db = PizzaDataBase.getDatabase(AppContext.context.applicationContext)
-    override suspend fun addPizzaToBasket(pizza: Pizza) {
+    override suspend fun addPizzaToBasket(pizza: BasketPizza) {
         withContext(Dispatchers.IO) {
             db.PizzaDao().insert(mapper.toPizzaEntity(pizza))
         }

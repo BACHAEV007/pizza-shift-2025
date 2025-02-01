@@ -25,6 +25,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pizza_shift_2025.R
+import com.example.pizza_shift_2025.domain.entity.BasketPizza
+import com.example.pizza_shift_2025.domain.entity.Pizza
+import com.example.pizza_shift_2025.domain.usecase.AddPizzaToBasketUseCase
 import com.example.pizza_shift_2025.presentation.state.PizzaCatalogState
 import com.example.pizza_shift_2025.presentation.state.PizzaDetailState
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaCatalogViewModel
@@ -35,13 +38,14 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     viewModel: PizzaDetailViewModel,
     pizzaId: String,
-    onItemSelected: () -> Unit,
     goToCatalogScreen: () -> Unit
 ) {
     val pizzaState by viewModel.state.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.getPizza(pizzaId)
     }
+
+
 
     Column(modifier = modifier.fillMaxSize()) {
         Row(
@@ -74,8 +78,8 @@ fun DetailScreen(
             is PizzaDetailState.Loading -> LoadingComponent()
 
             is PizzaDetailState.Content -> DetailScreenComponent(
-            body = state.detail,
-            onItemClicked = onItemSelected
+                pizzaState = state.detail,
+                viewModel
         )
             is PizzaDetailState.Failure -> Unit
         }
