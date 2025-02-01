@@ -24,7 +24,7 @@ class BasketRepositoryImpl (
             db.PizzaDao().insert(mapper.toPizzaEntity(pizza))
         }
     }
-    override fun getBasket(): Flow<List<Pizza>> {
+    override fun getBasket(): Flow<List<BasketPizza>> {
         return db.PizzaDao().getBasket().map { pizzaEntities ->
             pizzaEntities.map { mapper.toPizza(it) }
         }

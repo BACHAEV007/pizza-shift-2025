@@ -32,11 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.pizza_shift_2025.R
+import com.example.pizza_shift_2025.domain.entity.BasketPizza
 import com.example.pizza_shift_2025.domain.entity.Pizza
 
 @Composable
 fun BasketScreenComponent(
-    basketList: List<Pizza>,
+    basketList: List<BasketPizza>,
     onIncreasePizzaQuantity: (String) -> Unit,
     onDecreasePizzaQuantity: (String) -> Unit
 ) {
@@ -68,7 +69,7 @@ fun BasketScreenComponent(
 @Composable
 fun BasketItem(
     modifier: Modifier,
-    pizza: Pizza,
+    pizza: BasketPizza,
     onIncreasePizzaQuantity: (String) -> Unit,
     onDecreasePizzaQuantity: (String) -> Unit
 ) {
@@ -78,9 +79,9 @@ fun BasketItem(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clickable {
-                onIncreasePizzaQuantity(pizza.id)
-            }
+//            .clickable {
+//                onIncreasePizzaQuantity(pizza.id)
+//            }
     ) {
         Image(
             painter = painter,
@@ -143,7 +144,7 @@ fun BasketItem(
                 )
                 Spacer(modifier = Modifier.size(32.dp))
                 Text(
-                    text = stringResource(R.string.cost, pizza.sizes[0].price),
+                    text = stringResource(R.string.cost, pizza.price),
                     style = MaterialTheme.typography.labelMedium,
                     fontSize = 16.sp,
                     lineHeight = 16.sp

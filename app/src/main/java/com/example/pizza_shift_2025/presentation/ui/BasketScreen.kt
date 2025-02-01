@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pizza_shift_2025.R
+import com.example.pizza_shift_2025.presentation.state.PizzaBasketState
 import com.example.pizza_shift_2025.presentation.state.PizzaCatalogState
 import com.example.pizza_shift_2025.presentation.state.PizzaDetailState
 import com.example.pizza_shift_2025.presentation.viewmodel.BasketViewModel
@@ -44,7 +45,6 @@ fun BasketScreen(
     viewModel: BasketViewModel,
     orderButtonSelected: () -> Unit,
     goToCatalogScreen: () -> Unit,
-
 ) {
     val pizzaState by viewModel.state.collectAsState()
 
@@ -86,19 +86,19 @@ fun BasketScreen(
             }
 
             when (val state = pizzaState) {
-                is PizzaCatalogState.Initial,
-                is PizzaCatalogState.Loading -> LoadingComponent()
-                is PizzaCatalogState.Content -> BasketScreenComponent (
-                    basketList = state.pizzaCatalog,
+                is PizzaBasketState.Initial,
+                is PizzaBasketState.Loading -> LoadingComponent()
+                is PizzaBasketState.Content -> BasketScreenComponent (
+                    basketList = state.pizzaBasket,
                     onIncreasePizzaQuantity = ::onIncreasePizzaQuantity,
                     onDecreasePizzaQuantity = ::onDecreasePizzaQuantity
                 )
-                is PizzaCatalogState.Failure -> Unit
+                is PizzaBasketState.Failure -> Unit
             }
         }
 
         OrderSummaryBar(
-            orderPrice = 1240,
+            orderPrice = (pizzaState as? PizzaBasketState.Content)?.totalPrice ?: 0,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth(),

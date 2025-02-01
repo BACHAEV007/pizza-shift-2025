@@ -2,9 +2,9 @@ package com.example.pizza_shift_2025.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pizza_shift_2025.domain.usecase.CountPizzaPriceUseCase
 import com.example.pizza_shift_2025.domain.usecase.GetBasketUseCase
-import com.example.pizza_shift_2025.domain.usecase.GetPizzaCatalogUseCase
-import com.example.pizza_shift_2025.presentation.state.PizzaCatalogState
+import com.example.pizza_shift_2025.presentation.state.PizzaBasketState
 import com.example.pizza_shift_2025.presentation.state.PizzaDetailState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,22 +15,26 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 
 class BasketViewModel(
-    private val getBasketUseCase: GetBasketUseCase
+    private val getBasketUseCase: GetBasketUseCase,
+    private val countPizzaPriceUseCase: CountPizzaPriceUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<PizzaCatalogState>(PizzaCatalogState.Initial)
-    val state: StateFlow<PizzaCatalogState> = _state.asStateFlow()
+    private val _state = MutableStateFlow<PizzaBasketState>(PizzaBasketState.Initial)
+    val state: StateFlow<PizzaBasketState> = _state.asStateFlow()
 
     init {
-        loadCatalog()
+        loadBasket()
     }
 
-    fun loadCatalog() {
+    fun loadBasket() {
         viewModelScope.launch {
             getBasketUseCase()
-                .onStart { _state.value = PizzaCatalogState.Loading }
-                .catch { e -> _state.value = PizzaCatalogState.Failure(e.localizedMessage.orEmpty()) }
-                .collect { catalog -> _state.value = PizzaCatalogState.Content(catalog) }
+                .onStart { _state.value = PizzaBasketState.Loading }
+                .catch { e -> _state.value = PizzaBasketState.Failure(e.localizedMessage.orEmpty()) }
+                .collect { basket ->
+                    val totalPrice = basket.sumOf { countPizzaPriceUseCase(it) }
+                    _state.value = PizzaBasketState.Content(basket, totalPrice)
+                }
         }
     }
 }
