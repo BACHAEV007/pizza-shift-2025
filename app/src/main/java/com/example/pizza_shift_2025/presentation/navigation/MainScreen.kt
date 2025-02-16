@@ -21,21 +21,13 @@ import com.example.pizza_shift_2025.presentation.ui.DetailScreen
 import com.example.pizza_shift_2025.presentation.ui.OrderScreen
 import com.example.pizza_shift_2025.presentation.ui.ProfileScreen
 import com.example.pizza_shift_2025.presentation.viewmodel.BasketViewModel
-import com.example.pizza_shift_2025.presentation.viewmodel.BasketViewModelFactory
 import com.example.pizza_shift_2025.presentation.viewmodel.CheckoutViewModel
-import com.example.pizza_shift_2025.presentation.viewmodel.CheckoutViewModelFactory
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaCatalogViewModel
-import com.example.pizza_shift_2025.presentation.viewmodel.PizzaCatalogViewModelFactory
 import com.example.pizza_shift_2025.presentation.viewmodel.PizzaDetailViewModel
-import com.example.pizza_shift_2025.presentation.viewmodel.PizzaDetailViewModelFactory
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(
-    orderPizzaUseCase: OrderPizzaUseCase,
-    countPizzaPriceUseCase: CountPizzaPriceUseCase,
-    getPizzaCatalogUseCase: GetPizzaCatalogUseCase,
-    getBasketUseCase: GetBasketUseCase,
-    addPizzaToBasketUseCase: AddPizzaToBasketUseCase,
     modifier: Modifier = Modifier,
     navController: NavHostController,
     onBottomBarVisibilityChanged: (Boolean) -> Unit
@@ -44,12 +36,10 @@ fun MainScreen(
     NavHost(navController = navController, startDestination = Screen.CatalogScreen.route) {
         composable(Screen.CatalogScreen.route) {
             onBottomBarVisibilityChanged(true)
-            val viewModel: PizzaCatalogViewModel = viewModel(
-                factory = PizzaCatalogViewModelFactory(getPizzaCatalogUseCase)
-            )
+            val viewModel: PizzaCatalogViewModel = koinViewModel()
             CatalogScreen(
-                modifier,
-                viewModel,
+                modifier = modifier,
+                viewModel = viewModel,
                 onItemSelected = { pizzaId ->
                     navController.navigate(Screen.PizzaDetailScreen.createRoute(pizzaId))
                 },
@@ -64,9 +54,7 @@ fun MainScreen(
             onBottomBarVisibilityChanged(true)
             val pizzaId = backStackEntry.arguments?.getString("id") ?: return@composable
 
-            val viewModel: PizzaDetailViewModel = viewModel(
-                factory = PizzaDetailViewModelFactory(getPizzaCatalogUseCase, addPizzaToBasketUseCase)
-            )
+            val viewModel: PizzaDetailViewModel = koinViewModel()
 
             DetailScreen(
                 modifier,
@@ -86,9 +74,7 @@ fun MainScreen(
         }
         composable(Screen.BasketScreen.route) {
             onBottomBarVisibilityChanged(true)
-            val viewModel: BasketViewModel = viewModel(
-                factory = BasketViewModelFactory(getBasketUseCase, countPizzaPriceUseCase)
-            )
+            val viewModel: BasketViewModel = koinViewModel()
             BasketScreen(
                 modifier,
                 viewModel,
@@ -115,9 +101,7 @@ fun MainScreen(
             ProfileScreen()
         }
         composable(Screen.CheckoutScreen.route){
-            val viewModel: CheckoutViewModel = viewModel(
-                factory = CheckoutViewModelFactory(getBasketUseCase, orderPizzaUseCase, countPizzaPriceUseCase)
-            )
+            val viewModel: CheckoutViewModel = koinViewModel()
             onBottomBarVisibilityChanged(false)
             CheckoutScreen(
                 modifier = modifier,

@@ -1,5 +1,6 @@
 package com.example.pizza_shift_2025.di
 
+import com.example.pizza_shift_2025.data.mapper.PizzaMapper
 import com.example.pizza_shift_2025.data.network.PizzaApi
 import com.example.pizza_shift_2025.data.repository.BasketRepositoryImpl
 import com.example.pizza_shift_2025.data.repository.PizzaRepositoryImpl
@@ -29,6 +30,7 @@ val module = module {
     factoryOf(::GetBasketUseCase)
     factoryOf(::GetPizzaCatalogUseCase)
     factoryOf(::OrderPizzaUseCase)
+    factoryOf(::PizzaMapper)
 
     viewModelOf(::BasketViewModel)
     viewModelOf(::CheckoutViewModel)

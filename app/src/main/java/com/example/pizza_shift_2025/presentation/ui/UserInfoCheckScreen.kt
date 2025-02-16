@@ -29,7 +29,8 @@ import com.example.pizza_shift_2025.domain.entity.PaymentPerson
 
 @Composable
 fun UserInfoCheckScreen(
-    modifier: Modifier, goToBackScreen: () -> Unit,
+    modifier: Modifier = Modifier,
+    goToBackScreen: () -> Unit,
     initPerson: PaymentPerson? = null,
     initAddress: PaymentAddress? = null,
     onContinue: (person: PaymentPerson, address: String) -> Unit

@@ -24,8 +24,8 @@ class CheckoutViewModel(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<CheckoutState>(CheckoutState.FirstPart)
-    val state: StateFlow<CheckoutState> = _state.asStateFlow()
-
+    val state: StateFlow<CheckoutState>
+        get() = _state.asStateFlow()
 
 
     fun goToFirstPart() {
@@ -46,7 +46,12 @@ class CheckoutViewModel(
             _state.value = CheckoutState.SecondPart
         }
     }
-    fun validateDebitCard(paymentPerson: PaymentPerson, address: PaymentAddress, card: PaymentDebitCard){
+
+    fun validateDebitCard(
+        paymentPerson: PaymentPerson,
+        address: PaymentAddress,
+        card: PaymentDebitCard
+    ) {
         val cardPan = Regex("^\\d{4} \\d{4}$")
         val cardDate = Regex("^\\d{2}/\\d{2}$")
         val cardCVV = Regex("^\\d{3}$")

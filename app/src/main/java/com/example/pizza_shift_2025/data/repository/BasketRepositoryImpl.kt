@@ -16,16 +16,16 @@ import kotlinx.coroutines.withContext
 
 class BasketRepositoryImpl (
     private val pizzaApi: PizzaApi,
-    private val mapper: PizzaMapper
+    private val mapper: PizzaMapper,
+    private val pizzaDataBase: PizzaDataBase
 ) : BasketRepository{
-    private val db = PizzaDataBase.getDatabase(AppContext.context.applicationContext)
     override suspend fun addPizzaToBasket(pizza: BasketPizza) {
         withContext(Dispatchers.IO) {
-            db.PizzaDao().insert(mapper.toPizzaEntity(pizza))
+            pizzaDataBase.pizzaDao().insert(mapper.toPizzaEntity(pizza))
         }
     }
     override fun getBasket(): Flow<List<BasketPizza>> {
-        return db.PizzaDao().getBasket().map { pizzaEntities ->
+        return pizzaDataBase.pizzaDao().getBasket().map { pizzaEntities ->
             pizzaEntities.map { mapper.toPizza(it) }
         }
     }

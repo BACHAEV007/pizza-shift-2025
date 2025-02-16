@@ -30,16 +30,6 @@ import com.example.pizza_shift_2025.presentation.ui.BottomNavigationBar
 import com.example.pizza_shift_2025.ui.theme.Pizzashift2025Theme
 
 class MainActivity : ComponentActivity() {
-    private val networkModule = NetworkModule()
-    private val pizzaApi: PizzaApi = networkModule.retrofit.create(PizzaApi::class.java)
-    private val dbMapper: PizzaMapper = PizzaMapper()
-    private val BasketRepository: BasketRepository = BasketRepositoryImpl(pizzaApi, dbMapper)
-    private val pizzaRepository: PizzaRepository = PizzaRepositoryImpl(pizzaApi)
-    private val getPizzaCatalogUseCase: GetPizzaCatalogUseCase = GetPizzaCatalogUseCase(pizzaRepository)
-    private val getBasketUseCase: GetBasketUseCase = GetBasketUseCase(BasketRepository)
-    private val addPizzaToBasketUseCase: AddPizzaToBasketUseCase = AddPizzaToBasketUseCase(BasketRepository)
-    private val orderPizzaUseCase: OrderPizzaUseCase = OrderPizzaUseCase(pizzaRepository)
-    private val countPizzaPriceUseCase: CountPizzaPriceUseCase = CountPizzaPriceUseCase()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -57,11 +47,6 @@ class MainActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
                     MainScreen(
-                        orderPizzaUseCase,
-                        countPizzaPriceUseCase,
-                        getPizzaCatalogUseCase,
-                        getBasketUseCase,
-                        addPizzaToBasketUseCase,
                         modifier = Modifier.padding(innerPadding).background(Color.White),
                         navController = navController,
                         onBottomBarVisibilityChanged = { isVisible -> shouldShowBottomBar.value = isVisible }

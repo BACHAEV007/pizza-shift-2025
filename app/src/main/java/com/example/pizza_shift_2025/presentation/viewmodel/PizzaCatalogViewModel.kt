@@ -1,6 +1,7 @@
 package com.example.pizza_shift_2025.presentation.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_shift_2025.domain.usecase.GetPizzaCatalogUseCase
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 
+@Stable
 class PizzaCatalogViewModel(
     private val getPizzaCatalogUseCase: GetPizzaCatalogUseCase
 ): ViewModel() {
