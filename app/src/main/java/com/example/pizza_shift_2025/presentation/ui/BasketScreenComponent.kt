@@ -74,7 +74,13 @@ fun BasketItem(
     onDecreasePizzaQuantity: (String) -> Unit
 ) {
     val painter = rememberImagePainter(pizza.img)
-
+    fun calculatePizzaPrice(pizza: BasketPizza): Int {
+        val toppingsPrice = pizza.toppings.sumOf { it.cost }
+        val sizePrice = pizza.size.price
+        val doughPrice = pizza.doughs.price
+        return (toppingsPrice + sizePrice + doughPrice)
+    }
+    val pizzaPrice = calculatePizzaPrice(pizza)
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -144,7 +150,7 @@ fun BasketItem(
                 )
                 Spacer(modifier = Modifier.size(32.dp))
                 Text(
-                    text = stringResource(R.string.cost, pizza.price),
+                    text = stringResource(R.string.cost, pizzaPrice),
                     style = MaterialTheme.typography.labelMedium,
                     fontSize = 16.sp,
                     lineHeight = 16.sp

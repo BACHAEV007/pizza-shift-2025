@@ -75,6 +75,8 @@ android {
 }
 
 dependencies {
+    implementation("io.insert-koin:koin-android:3.5.3")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.ktx)
